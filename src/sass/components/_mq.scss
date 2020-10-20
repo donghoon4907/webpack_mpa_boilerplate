@@ -1,0 +1,31 @@
+@import "../utilities/mixins";
+
+@include mq(wd) {
+    .dummy {
+        z-index: -1;
+    }
+}
+
+@include mq(lg) {
+    .dummy {
+        z-index: -1;
+    }
+}
+
+@include mq(md) {
+    .dummy {
+        z-index: -1;
+    }
+}
+
+@include mq(sm) {
+    .dummy {
+        z-index: -1;
+    }
+}
+
+@include mq(xs) {
+    .dummy {
+        z-index: -1;
+    }
+}
