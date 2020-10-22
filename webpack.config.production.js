@@ -19,9 +19,9 @@ module.exports = {
         return obj;
     }, {}),
     output: {
-        filename: "[name].[chunkhash:8].bundle.js",
-        path: path.resolve(__dirname, "dist"),
-        chunkFilename: "[name].[chunkhash:8].chunk.js"
+        filename: "js/[name].[chunkhash:8].bundle.js",
+        path: path.resolve(__dirname, "build"),
+        chunkFilename: "js/[name].[chunkhash:8].chunk.js"
     },
     module: {
         rules: [
@@ -82,7 +82,7 @@ module.exports = {
     plugins: [
         /* .env 활성화 */
         new Dotenv({
-            path: './.env.production'
+            path: "./.env.production"
         }),
         /* 빌드 전에 기존 빌드 폴더를 제거 */
         new CleanWebpackPlugin(),
@@ -90,9 +90,10 @@ module.exports = {
         new HtmlWebpackPugPlugin(),
         /* 로드한 css파일을 별도의 파일로 추출 */
         new MiniCssExtractPlugin({
-            filename: "[name].[chunkhash:8].bundle.css",
-            chunkFilename: "[name].[chunkhash:8].chunk.css"
+            filename: "css/[name].[chunkhash:8].bundle.css",
+            chunkFilename: "css/[name].[chunkhash:8].chunk.css"
         }),
+        /* js 축소 */
         new TerserJSPlugin(),
         /* css 최적화 / 최소화 기본적으로 cssnano 사용  */
         new OptimizeCSSAssetsPlugin(),
@@ -113,7 +114,8 @@ module.exports = {
             (key) =>
                 new HtmlWebpackPlugin({
                     template: entry[key]["pug"],
-                    filename: key + ".html"
+                    filename: `html/${key}.html`
                 })
-        ))
+        )
+    )
 };

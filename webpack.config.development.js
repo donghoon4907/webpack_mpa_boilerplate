@@ -15,7 +15,7 @@ module.exports = {
     }, {}),
     output: {
         filename: "[name].bundle.js",
-        path: path.resolve(__dirname, "build")
+        path: path.join(__dirname, "./dist")
     },
     module: {
         rules: [
@@ -58,7 +58,7 @@ module.exports = {
     plugins: [
         /* .env 활성화 */
         new Dotenv({
-            path: './.env.development'
+            path: "./.env.development"
         }),
         /* 빌드 전에 기존 빌드 폴더를 제거 */
         new CleanWebpackPlugin(),
@@ -75,15 +75,14 @@ module.exports = {
                     template: entry[key]["pug"],
                     filename: key + ".html"
                 })
-        )),
+        )
+    ),
     devServer: {
-        host: "localhost",
-        /* 정적 파일 절대경로 설정 */
-        contentBase: path.resolve(__dirname, "build"),
-        /* gzip 압축 활성화 */
+        contentBase: path.join(__dirname, "./dist"),
         compress: true,
+        historyApiFallback: true,
+        index: "main.html",
         port: 4000,
-        /* 컴파일러 오류 및 경고를 브라우저에서 표시*/
-        overlay: true
+        hot: true
     }
 };
