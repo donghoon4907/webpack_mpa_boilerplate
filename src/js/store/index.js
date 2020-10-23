@@ -3,7 +3,8 @@ import mutations from "./mutations.js";
 import Store from "./store.js";
 
 const initialState = {
-    items: ["I made this", "Another thing"]
+    users: [],
+    usersTotal: 0
 };
 
 export default new Store({

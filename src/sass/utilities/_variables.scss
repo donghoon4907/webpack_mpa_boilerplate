@@ -1,7 +1,11 @@
 /* 배경색 */
 $bg-color: #f7f7f8;
+/* 테두리색 */
+$border-color: #e6e6e6;
 /* 테두리 */
-$box-border: 1px solid #e6e6e6;
+$box-border: 1px solid $border-color;
+/* 입력 글자색 */
+$input-color: #9dbfaf;
 /* 테두리 반경 */
 $border-radius: 4px;
 /* 버튼색 */

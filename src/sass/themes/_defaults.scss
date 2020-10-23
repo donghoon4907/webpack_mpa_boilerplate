@@ -1,6 +1,4 @@
 @import "./reset";
-@import "../utilities/variables";
-@import "../utilities/mixins";
 
 body {
     background: $bg-color;
@@ -23,7 +21,7 @@ html {
     flex-direction: column;
     height: 100%;
     width: 100%;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 hr {
@@ -37,6 +35,7 @@ button {
     width: auto;
     overflow: visible;
     background: transparent;
+    cursor: pointer;
 }
 
 button:focus {

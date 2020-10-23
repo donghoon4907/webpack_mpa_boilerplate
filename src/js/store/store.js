@@ -1,4 +1,5 @@
 import PubSub from "../lib/pubsub.js";
+import { CHANGE_STATE } from "./actions";
 
 /**
  * 상태 관리 모듈
@@ -8,29 +9,29 @@ import PubSub from "../lib/pubsub.js";
  * @property {object} state     - 상태 관리 컬렉션
  * @property {string} status    - 작업 상태 관리
  * @property {function} events  - pubsub module instance
- * */
+ */
 export default class Store {
     constructor(params) {
         let self = this;
 
-        self.actions = {};
-        self.mutations = {};
-        self.state = {};
-        self.status = "resting";
-        self.events = new PubSub();
+        this.actions = {};
+        this.mutations = {};
+        this.state = {};
+        this.status = "resting";
+        this.events = new PubSub();
 
         /* action 컬렉션을 전달 받은 경우 업데이트 */
         if (params["actions"]) {
-            self.actions = params.actions;
+            this.actions = params.actions;
         }
 
         /* mutation 컬렉션을 전달 받은 경우 업데이트 */
         if (params["mutations"]) {
-            self.mutations = params.mutations;
+            this.mutations = params.mutations;
         }
 
         /* 상태 감시 모듈 활성화 */
-        self.state = new Proxy(params.initialState || {}, {
+        this.state = new Proxy(params.initialState || {}, {
             /**
              * 상태 변경을 감시
              */
@@ -41,7 +42,8 @@ export default class Store {
                 console.log(`STATE_CHANGE: ${key}: ${value}`);
 
                 /* 상태 변경 이벤트 발행 */
-                self.events.publish("STATE_CHANGE", self.state);
+                self.events.publish(CHANGE_STATE, self.state);
+                console.log("test");
 
                 if (self.status !== "mutation") {
                     console.warn(`You should use a mutation to set ${key}`);
@@ -112,6 +114,8 @@ export default class Store {
 
         /* 이전 상태와 새로운 상태를 병합 */
         self.state = Object.assign(self.state, newState);
+
+        console.log(self.state);
 
         return true;
     }

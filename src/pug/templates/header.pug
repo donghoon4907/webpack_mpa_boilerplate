@@ -1,6 +1,8 @@
 div(class="header-wrapper")
     header(class="header")
         div(class="header__column")
-            h1
-                a(href="/") List
+        div(class="header__column")
+            form(class="form-search" autocomplete="off" data-js="search-user__form")
+                input(type="search" class="form-search__input" data-js="search-user__input")
+                button(class="form-search__button") 검색
         div(class="header__column")

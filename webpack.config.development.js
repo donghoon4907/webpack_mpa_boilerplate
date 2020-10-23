@@ -15,7 +15,7 @@ module.exports = {
     }, {}),
     output: {
         filename: "[name].bundle.js",
-        path: path.join(__dirname, "./dist")
+        path: path.join(__dirname, "dist")
     },
     module: {
         rules: [
@@ -28,12 +28,7 @@ module.exports = {
             },
             {
                 test: /\.(sa|sc|c)ss$/,
-                use: [
-                    "style-loader" /* 로드한 css파일들을 style태그로 만들어 head태그에 넣어줍니다 */,
-                    "css-loader",
-                    "sass-loader",
-                    "postcss-loader"
-                ]
+                use: ["style-loader" /* 로드한 css파일들을 style태그로 만들어 head태그에 넣어줍니다 */, "css-loader", "sass-loader", "postcss-loader"]
             },
             {
                 test: /\.(png|svg|jpe?g|gif)$/,
@@ -72,13 +67,15 @@ module.exports = {
         Object.keys(entry).map(
             (key) =>
                 new HtmlWebpackPlugin({
+                    inject: true,
+                    chunks: [key],
                     template: entry[key]["pug"],
                     filename: key + ".html"
                 })
         )
     ),
     devServer: {
-        contentBase: path.join(__dirname, "./dist"),
+        contentBase: path.join(__dirname, "dist"),
         compress: true,
         historyApiFallback: true,
         index: "main.html",

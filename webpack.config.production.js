@@ -99,7 +99,7 @@ module.exports = {
         new OptimizeCSSAssetsPlugin(),
         /* 사용하지 않는 css 제거 */
         new PurgecssPlugin({
-            paths: glob.sync(path.resolve(__dirname, "../src/**/*"), {
+            paths: glob.sync(path.resolve(__dirname, "src/**/*"), {
                 nodir: true
             })
         }),
@@ -113,6 +113,8 @@ module.exports = {
         Object.keys(entry).map(
             (key) =>
                 new HtmlWebpackPlugin({
+                    inject: true,
+                    chunks: [key],
                     template: entry[key]["pug"],
                     filename: `html/${key}.html`
                 })
