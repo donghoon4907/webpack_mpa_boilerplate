@@ -1,0 +1,88 @@
+@import "./reset";
+
+body {
+    background: $bg-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 0;
+}
+
+#root,
+body,
+html {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    font-size: 15px;
+}
+
+hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #dededf;
+}
+
+button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+    cursor: pointer;
+}
+
+button:focus {
+    outline: 0 !important;
+}
+
+.a11y-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: polygon(0 0, 0 0, 0 0);
+}
+
+.modal {
+    display: flex !important;
+}
+
+.modal-dialog {
+    flex: 1;
+    margin: 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100% !important;
+}
+
+.modal-content {
+    max-width: 500px;
+}
+
+.te-mode-switch-section {
+    display: none !important;
+}
+
+.tui-editor-contents pre {
+    @include wb;
+}
+
+.tui-editor-contents pre[class*="lang"] {
+    background: #202020 !important;
+    color: white !important;
+}
+
+.tui-editor-contents img {
+    width: 100%;
+}

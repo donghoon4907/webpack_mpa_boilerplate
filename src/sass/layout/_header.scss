@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 0.6rem;
+    position: relative;
+
+    &-wrapper {
+        height: 3rem;
+        background: white;
+        border-bottom: $box-border;
+        box-shadow: $header-shadow;
+        flex-shrink: 0;
+        z-index: 1000;
+
+        & svg {
+            fill: $btn-color;
+        }
+    }
+
+    &__column {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+        & > * {
+            margin-left: 0.6rem;
+        }
+    }
+}

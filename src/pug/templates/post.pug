@@ -1,0 +1,10 @@
+each item, index in data
+    div(class="card")
+        div(class="card__header")
+            img(src=item.picture alt="avatar")
+        div(class="card__body")
+            h5(class="card__title")=item.lastName
+            h6(class="card__subtitle")
+                a(class="card__link" href=`mailto:${item.email}`)=item.email
+        div(class="card__footer")
+            button(data-btn="remove" data-key=index) 제외하기

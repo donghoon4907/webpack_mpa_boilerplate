@@ -1,0 +1,8 @@
+each item, index in data
+    div(class="card-user")
+        div(class="card-user__column")
+            div(class="card-user__header")
+            div(class="card-user__body")
+                img(class="card-user__avatar" src=item.picture alt="avatar")
+            div(class="card-user__footer")
+                h5(class="card-user__title")=`${item.firstName} ${item.lastName}`
