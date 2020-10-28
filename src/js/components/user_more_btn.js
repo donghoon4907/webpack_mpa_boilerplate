@@ -5,7 +5,7 @@ import { FETCHMORE_USER } from "../store/actions";
 import { TYPE_USER } from "../store/types";
 
 /**
- * 사용자 더보기 버튼 컴포넌트
+ * user more btn component
  *
  * @property {object} type
  * @property {object} state
@@ -41,7 +41,7 @@ export default class UserMoreBtn extends MoreBtn {
     /**
      * bind events
      *
-     * @memberof MoreBtn
+     * @memberof UserMoreBtn
      */
     bindEvt() {
         let self = this;

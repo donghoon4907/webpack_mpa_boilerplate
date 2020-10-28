@@ -64,7 +64,12 @@ module.exports = {
     },
     optimization: {
         minimize: true,
-        minimizer: [new OptimizeCSSAssetsPlugin(), new TerserJSPlugin()],
+        minimizer: [
+            new OptimizeCSSAssetsPlugin(),
+            new TerserJSPlugin({
+                extractComments: false
+            })
+        ],
         splitChunks: {
             cacheGroups: {
                 commons: {

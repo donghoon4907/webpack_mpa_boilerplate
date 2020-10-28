@@ -3,7 +3,7 @@ import store from "../store";
 import moreBtn from "../../pug/templates/more_btn.pug";
 
 /**
- * 더보기 버튼 컴포넌트
+ * more btn component
  *
  */
 export default class MoreBtn extends Component {

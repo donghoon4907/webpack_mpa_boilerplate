@@ -37,6 +37,8 @@ class MainPage {
 
         this.users = new UserList();
 
+        console.log(this.users);
+
         this.userMoreBtn = new UserMoreBtn({
             page: user.page,
             limit: user.limit,
@@ -63,6 +65,7 @@ class MainPage {
     /**
      * bind events
      *
+     * @memberof MainPage
      */
     bindEvent() {}
 }

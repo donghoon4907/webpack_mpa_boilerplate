@@ -5,7 +5,7 @@ import { FETCHMORE_POST } from "../store/actions";
 import { TYPE_POST } from "../store/types";
 
 /**
- * 포스트 더보기 버튼 컴포넌트
+ * post more btn component
  *
  * @property {object} type
  * @property {object} state
@@ -41,7 +41,7 @@ export default class PostMoreBtn extends MoreBtn {
     /**
      * bind events
      *
-     * @memberof MoreBtn
+     * @memberof PostMoreBtn
      */
     bindEvt() {
         let self = this;

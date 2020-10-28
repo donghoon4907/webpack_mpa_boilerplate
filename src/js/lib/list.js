@@ -3,7 +3,7 @@ import store from "../store";
 import none from "../../pug/templates/none.pug";
 
 /**
- * 목록 컴포넌트
+ * list component
  *
  */
 export default class List extends Component {
@@ -14,26 +14,24 @@ export default class List extends Component {
     /**
      * show skeleton
      *
-     * @memberof UserList
+     * @memberof List
      */
-    showSkeleton = async () => {
+    async showSkeleton() {
         let self = this;
 
         const { wrapper } = self.selector;
 
-        const skeleton = await import(`../../pug/templates/${self.type}_skeleton.pug`).then((obj) => obj.default);
-
         const $wrapper = document.querySelector(wrapper);
 
-        $wrapper.insertAdjacentHTML("beforeend", skeleton());
-    };
+        $wrapper.insertAdjacentHTML("beforeend", self.skeleton());
+    }
 
     /**
      * hide skeleton
      *
-     * @memberof UserList
+     * @memberof List
      */
-    hideSkeleton = () => {
+    hideSkeleton() {
         let self = this;
 
         const { wrapper, skeleton } = self.selector;
@@ -41,14 +39,14 @@ export default class List extends Component {
         const $wrapper = document.querySelector(wrapper);
 
         $wrapper.querySelectorAll(skeleton).forEach(($e) => $e.remove());
-    };
+    }
 
     /**
      * clear list
      *
-     * @memberof UserList
+     * @memberof List
      */
-    clearList = () => {
+    clearList() {
         let self = this;
 
         const { wrapper } = self.selector;
@@ -56,14 +54,14 @@ export default class List extends Component {
         const $wrapper = document.querySelector(wrapper);
 
         $wrapper.innerHTML = "";
-    };
+    }
 
     /**
      * renderer
      *
-     * @memberof UserList
+     * @memberof List
      */
-    render = async () => {
+    async render() {
         let self = this;
 
         const { data } = store.state[self.type];
@@ -78,7 +76,7 @@ export default class List extends Component {
         if (data.length === 0) {
             template = none;
         } else {
-            template = await import(`../../pug/templates/${self.type}.pug`).then((obj) => obj.default);
+            template = self.template;
         }
 
         self.hideSkeleton();
@@ -86,5 +84,5 @@ export default class List extends Component {
         $wrapper.insertAdjacentHTML("beforeend", template({ data: newData }));
 
         self.bindEvt();
-    };
+    }
 }
