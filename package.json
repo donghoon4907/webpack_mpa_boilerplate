@@ -1,7 +1,7 @@
 {
-    "name": "graphql-client",
+    "name": "webpack_mpa_boilerplate",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "main.js",
     "license": "MIT",
     "scripts": {
         "dev": "webpack-dev-server --config webpack.config.development.js",
@@ -43,7 +43,6 @@
     "dependencies": {
         "axios": "^0.19.2",
         "core-js": "3",
-        "jquery": "^3.5.1",
         "moment": "^2.24.0",
         "rxjs": "^6.6.3"
     },
