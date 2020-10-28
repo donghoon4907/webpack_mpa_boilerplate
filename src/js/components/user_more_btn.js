@@ -1,3 +1,5 @@
+import { fromEvent } from "rxjs";
+import { throttleTime } from "rxjs/operators";
 import MoreBtn from "../lib/more_btn";
 import { FETCHMORE_USER } from "../store/actions";
 import { TYPE_USER } from "../store/types";
@@ -31,6 +33,8 @@ export default class UserMoreBtn extends MoreBtn {
             btn: `[data-js=morebtn-${this.type}]`
         };
 
+        this.events = {};
+
         this.loader = loader || function () {};
     }
 
@@ -44,6 +48,8 @@ export default class UserMoreBtn extends MoreBtn {
 
         const { btn } = self.selector;
 
-        document.querySelector(btn).onclick = () => self.handleFetchMore();
+        this.events.btn$ = fromEvent(document.querySelector(btn), "click");
+
+        this.events.btn$.pipe(throttleTime(1000)).subscribe(() => self.handleFetchMore());
     }
 }

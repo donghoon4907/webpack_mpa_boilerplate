@@ -38,8 +38,6 @@ export default class Store {
                 /* 상태 변경 */
                 state[key] = value;
 
-                console.log(`STATE_CHANGE: ${key}`);
-
                 const { type } = value;
 
                 if (!type) {

@@ -37,8 +37,6 @@ class MainPage {
 
         this.users = new UserList();
 
-        console.log(this.users);
-
         this.userMoreBtn = new UserMoreBtn({
             page: user.page,
             limit: user.limit,
