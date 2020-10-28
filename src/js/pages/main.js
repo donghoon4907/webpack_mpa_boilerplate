@@ -37,8 +37,6 @@ class MainPage {
 
         this.users = new UserList();
 
-        console.log(this.users);
-
         this.userMoreBtn = new UserMoreBtn({
             page: user.page,
             limit: user.limit,
@@ -70,6 +68,4 @@ class MainPage {
     bindEvent() {}
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    new MainPage();
-});
+new MainPage();
