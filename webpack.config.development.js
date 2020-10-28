@@ -1,9 +1,7 @@
 const path = require("path");
-const webpack = require("webpack");
 const Dotenv = require("dotenv-webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackPugPlugin = require("html-webpack-pug-plugin");
 const entry = require("./entry.json");
 
 module.exports = {
@@ -22,31 +20,24 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader"
-                }
+                loader: "babel-loader"
             },
             {
                 test: /\.(sa|sc|c)ss$/,
                 use: ["style-loader" /* 로드한 css파일들을 style태그로 만들어 head태그에 넣어줍니다 */, "css-loader", "sass-loader", "postcss-loader"]
             },
             {
-                test: /\.(png|svg|jpe?g|gif)$/,
-                use: [
-                    {
-                        loader: "file-loader",
-                        options: {
-                            name: "[name].[ext]",
-                            outputPath: "assets/"
-                        }
-                    }
-                ]
+                test: /\.(ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "url-loader",
+                options: {
+                    name: "[hash].[ext]",
+                    /* limit 보다 작은 파일은 base64 인코딩 및 인라인화, 큰 파일은 file-loader가 파일로 처리 */
+                    limit: 10000
+                }
             },
             {
                 test: /\.pug$/,
-                use: {
-                    loader: "pug-loader"
-                }
+                loader: "pug-loader"
             }
         ]
     },
@@ -56,13 +47,7 @@ module.exports = {
             path: "./.env.development"
         }),
         /* 빌드 전에 기존 빌드 폴더를 제거 */
-        new CleanWebpackPlugin(),
-        /* pug -> html */
-        new HtmlWebpackPugPlugin(),
-        /* 전역 모듈 설정 */
-        new webpack.ProvidePlugin({
-            $: "jquery"
-        })
+        new CleanWebpackPlugin()
     ].concat(
         Object.keys(entry).map(
             (key) =>

@@ -9,11 +9,11 @@ const PurgecssPlugin = require("purgecss-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackPugPlugin = require("html-webpack-pug-plugin");
 const entry = require("./entry.json");
 
 module.exports = {
     mode: "production",
+    devtool: "source-map",
     entry: Object.keys(entry).reduce((obj, cur) => {
         obj[cur] = entry[cur]["js"];
         return obj;
@@ -28,31 +28,20 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader"
-                }
+                loader: "babel-loader"
             },
             {
                 test: /\.(sa|sc|c)ss$/,
-                use: [
-                    /* style-loader를 대체*/
-                    MiniCssExtractPlugin.loader,
-                    "css-loader",
-                    "sass-loader",
-                    "postcss-loader"
-                ]
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader", "postcss-loader"]
             },
             {
-                test: /\.(png|svg|jpe?g|gif)$/,
-                use: [
-                    {
-                        loader: "file-loader",
-                        options: {
-                            name: "[name].[ext]",
-                            outputPath: "assets/"
-                        }
-                    }
-                ]
+                test: /\.(ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "url-loader",
+                options: {
+                    name: "[hash].[ext]",
+                    /* limit 보다 작은 파일은 base64 인코딩 및 인라인화, 큰 파일은 file-loader가 파일로 처리 */
+                    limit: 10000
+                }
             },
             {
                 test: /\.pug$/,
@@ -65,9 +54,17 @@ module.exports = {
     optimization: {
         minimize: true,
         minimizer: [
+            /* css 최적화 / 최소화 기본적으로 cssnano 사용 */
             new OptimizeCSSAssetsPlugin(),
+            /* js 최적화 / 최소화 */
             new TerserJSPlugin({
-                extractComments: false
+                extractComments: false,
+                terserOptions: {
+                    output: {
+                        /* 주석 제거 */
+                        comments: false
+                    }
+                }
             })
         ],
         splitChunks: {
@@ -91,17 +88,11 @@ module.exports = {
         }),
         /* 빌드 전에 기존 빌드 폴더를 제거 */
         new CleanWebpackPlugin(),
-        /* pug -> html */
-        new HtmlWebpackPugPlugin(),
         /* 로드한 css파일을 별도의 파일로 추출 */
         new MiniCssExtractPlugin({
             filename: "css/[name].[chunkhash:8].bundle.css",
             chunkFilename: "css/[name].[chunkhash:8].chunk.css"
         }),
-        /* js 축소 */
-        new TerserJSPlugin(),
-        /* css 최적화 / 최소화 기본적으로 cssnano 사용  */
-        new OptimizeCSSAssetsPlugin(),
         /* 사용하지 않는 css 제거 */
         new PurgecssPlugin({
             paths: glob.sync(path.resolve(__dirname, "src/**/*"), {

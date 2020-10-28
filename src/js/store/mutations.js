@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const { defaults } = axios;
-defaults.baseURL = "https://dummyapi.io/data/api/";
+defaults.baseURL = process.env.API_BASE_URL;
 defaults.headers.common["app-id"] = process.env.API_APP_ID;
 defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 

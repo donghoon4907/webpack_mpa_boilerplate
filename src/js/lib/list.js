@@ -23,7 +23,9 @@ export default class List extends Component {
 
         const $wrapper = document.querySelector(wrapper);
 
-        $wrapper.insertAdjacentHTML("beforeend", self.skeleton());
+        const skeleton = await import(/* webpackMode: "eager" */ `../../pug/templates/${self.type}_skeleton.pug`).then((obj) => obj.default);
+
+        $wrapper.insertAdjacentHTML("beforeend", skeleton());
     }
 
     /**
@@ -76,7 +78,7 @@ export default class List extends Component {
         if (data.length === 0) {
             template = none;
         } else {
-            template = self.template;
+            template = await import(/* webpackMode: "eager" */ `../../pug/templates/${self.type}.pug`).then((obj) => obj.default);
         }
 
         self.hideSkeleton();

@@ -7,6 +7,8 @@ import UserList from "../components/user_list";
 import PostList from "../components/post_list";
 import UserMoreBtn from "../components/user_more_btn";
 import PostMoreBtn from "../components/post_more_btn";
+import UserTotal from "../components/user_total";
+import PostTotal from "../components/post_total";
 
 /**
  * 메인 페이지 컴포넌트
@@ -17,6 +19,8 @@ import PostMoreBtn from "../components/post_more_btn";
  * @property {object} posts         - post list component instance
  * @property {object} userMoreBtn   - user list more btn
  * @property {object} postMoreBtn   - post list more btn
+ * @property {object} userTotal   - user list more btn
+ * @property {object} postTotal   - post list more btn
  */
 class MainPage {
     constructor() {
@@ -37,6 +41,8 @@ class MainPage {
 
         this.users = new UserList();
 
+        this.userTotal = new UserTotal();
+
         this.userMoreBtn = new UserMoreBtn({
             page: user.page,
             limit: user.limit,
@@ -44,6 +50,8 @@ class MainPage {
         });
 
         this.posts = new PostList();
+
+        this.postTotal = new PostTotal();
 
         this.postMoreBtn = new PostMoreBtn({
             page: post.page,
