@@ -14,16 +14,69 @@ export default {
                 params: payload
             });
 
-            state.users = data;
-            state.total = total;
+            state.user = {
+                ...state.user,
+                data,
+                total
+            };
         } catch (e) {
             console.error(e);
         }
 
         return state;
     },
-    removeSearchUser(state, payload) {
-        state.list.splice(payload.index, 1);
+    async fetchMoreUser(state, payload) {
+        try {
+            const {
+                data: { data }
+            } = await axios.get("user", {
+                params: payload
+            });
+
+            state.user = {
+                ...state.user,
+                data: state.user.data.concat(data)
+            };
+        } catch (e) {
+            console.error(e);
+        }
+
+        return state;
+    },
+    async searchPost(state, payload) {
+        try {
+            const {
+                data: { data, total }
+            } = await axios.get("post", {
+                params: payload
+            });
+
+            state.post = {
+                ...state.post,
+                data,
+                total
+            };
+        } catch (e) {
+            console.error(e);
+        }
+
+        return state;
+    },
+    async fetchMorePost(state, payload) {
+        try {
+            const {
+                data: { data }
+            } = await axios.get("post", {
+                params: payload
+            });
+
+            state.post = {
+                ...state.post,
+                data: state.post.data.concat(data)
+            };
+        } catch (e) {
+            console.error(e);
+        }
 
         return state;
     }

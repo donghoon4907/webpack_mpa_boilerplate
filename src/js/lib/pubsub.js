@@ -16,6 +16,10 @@ export default class PubSub {
 
         const { subscribers } = self;
 
+        if (!evt) {
+            throw new Error("evt is not subscribed.");
+        }
+
         /**
          * 이벤트 컬렉션이 구성되지 않은 경우 새로운 컬렉션을 추가
          */

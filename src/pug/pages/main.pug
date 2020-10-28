@@ -1,7 +1,12 @@
 extends ../templates/layout 
 
 block head
-    title DemoMainPage
+    title demo
 
 block content 
-    div(data-js="list")
+    h2(class="app__title") Users
+    div(class="user-card-wrapper" data-js="user")
+    div(class="app__more" data-js="more-user")
+    h2(class="app__title") Posts
+    div(class="post-card-wrapper" data-js="post")
+    div(class="app__more" data-js="more-post")

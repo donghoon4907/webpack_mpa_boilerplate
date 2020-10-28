@@ -1,10 +1,19 @@
-import actions from "./actions.js";
-import mutations from "./mutations.js";
-import Store from "./store.js";
+import actions from "./actions";
+import mutations from "./mutations";
+import Store from "./store";
+import { TYPE_USER, TYPE_POST } from "./types";
 
 const initialState = {
-    users: [],
-    usersTotal: 0
+    user: {
+        data: [],
+        total: 0,
+        type: TYPE_USER
+    },
+    post: {
+        data: [],
+        total: 0,
+        type: TYPE_POST
+    }
 };
 
 export default new Store({

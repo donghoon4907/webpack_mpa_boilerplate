@@ -1,0 +1,91 @@
+.user {
+    &-card {
+        margin-bottom: 1rem;
+        flex-basis: 20%;
+        max-width: 20%;
+        padding: 0 1rem;
+        box-sizing: border-box;
+
+        &-wrapper {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
+
+        &__column {
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+
+            @include wb;
+
+            &:hover {
+                box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        &__header {
+            order: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        &__body {
+            order: 2;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &__avatar {
+            width: 50%;
+            border-radius: 50%;
+
+            &.skeleton {
+                padding-bottom: 50%;
+                background-color: #ccc;
+
+                @include background-gradient;
+                animation: shine-lines $skeleton-animation-duration infinite linear;
+            }
+        }
+
+        &__footer {
+            order: 3;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+
+            @include text-truncate-wrap;
+
+            &.skeleton {
+                width: 50%;
+                margin: 0 auto;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        &__title {
+            text-align: center;
+
+            @include text-truncate;
+
+            &.skeleton {
+                padding-bottom: 25%;
+                border-radius: 1rem;
+                @include background-gradient;
+                animation: shine-lines $skeleton-animation-duration infinite linear;
+            }
+        }
+    }
+}

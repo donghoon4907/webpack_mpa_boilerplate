@@ -1,5 +1,4 @@
 import PubSub from "../lib/pubsub.js";
-import { CHANGE_STATE } from "./actions";
 
 /**
  * 상태 관리 모듈
@@ -39,11 +38,16 @@ export default class Store {
                 /* 상태 변경 */
                 state[key] = value;
 
-                console.log(`STATE_CHANGE: ${key}: ${value}`);
+                console.log(`STATE_CHANGE: ${key}`);
+
+                const { type } = value;
+
+                if (!type) {
+                    throw new Error("type is not defined in new state");
+                }
 
                 /* 상태 변경 이벤트 발행 */
-                self.events.publish(CHANGE_STATE, self.state);
-                console.log("test");
+                self.events.publish(type, self.state);
 
                 if (self.status !== "mutation") {
                     console.warn(`You should use a mutation to set ${key}`);
