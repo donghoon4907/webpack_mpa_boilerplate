@@ -4,9 +4,12 @@
       "@babel/preset-env",
       {
         "useBuiltIns": "usage",
-        "debug": true,
+        "debug": false,
         "corejs": 3,
-        "shippedProposals": true
+        "shippedProposals": true,
+        "targets": {
+          "browsers": ["last 2 versions"]
+        }
       }
     ]
   ]
