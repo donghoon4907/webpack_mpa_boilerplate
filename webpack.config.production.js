@@ -101,7 +101,9 @@ module.exports = {
         }),
         /* gzip 압축 */
         new CompressionPlugin({
-            algorithm: "gzip"
+            algorithm: "gzip",
+            threshold: 10240, // 10kb
+            minRatio: 0.8
         }),
         /* brotli 압축 */
         new BrotliPlugin()
