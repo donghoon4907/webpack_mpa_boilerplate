@@ -1,27 +1,25 @@
 {
-  "parser": "babel-eslint",
-  "extends": [
-    "eslint:recommended"
-  ],
-  "plugins": [
-    "import",
-    "promise"
-  ],
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es6": true,
-    "node": true,
-    "jquery": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 6
-  },
-  "rules": {
-    "indent": [
-      0,
-      4
-    ],
-    "space-before-function-paren": 0
-  }
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended", "prettier/@typescript-eslint"],
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "node": true
+    },
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": [0, 4],
+        "space-before-function-paren": 0,
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-this-alias": "off",
+        "@typescript-eslint/no-non-null-assertion": "off"
+    }
 }

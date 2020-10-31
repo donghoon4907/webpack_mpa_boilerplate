@@ -1,30 +1,25 @@
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const entry = require("./entry.json");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-module.exports = {
-    mode: "development",
-    devtool: "eval-cheap-module-source-map",
-    entry: Object.keys(entry).reduce((obj, cur) => {
-        obj[cur] = entry[cur]["js"];
+/* entry points */
+const entry = ["main", "error"];
+
+module.exports = ({ mode }) => ({
+    entry: entry.reduce((obj, cur) => {
+        obj[cur] = path.resolve(__dirname, `src/ts/pages/${cur}.ts`);
         return obj;
     }, {}),
-    output: {
-        filename: "[name].bundle.js",
-        path: path.join(__dirname, "dist")
+    resolve: {
+        extensions: [".js", ".ts"]
     },
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.ts?$/,
                 exclude: /node_modules/,
-                loader: "babel-loader"
-            },
-            {
-                test: /\.(sa|sc|c)ss$/,
-                use: ["style-loader" /* 로드한 css파일들을 style태그로 만들어 head태그에 넣어줍니다 */, "css-loader", "sass-loader", "postcss-loader"]
+                loader: "ts-loader"
             },
             {
                 test: /\.(ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -44,27 +39,19 @@ module.exports = {
     plugins: [
         /* .env 활성화 */
         new Dotenv({
-            path: "./.env.development"
+            path: `./.env.${mode}`
         }),
         /* 빌드 전에 기존 빌드 폴더를 제거 */
         new CleanWebpackPlugin()
     ].concat(
-        Object.keys(entry).map(
+        entry.map(
             (key) =>
                 new HtmlWebpackPlugin({
                     inject: true,
                     chunks: [key],
-                    template: entry[key]["pug"],
-                    filename: key + ".html"
+                    template: path.resolve(__dirname, `src/pug/pages/${key}.pug`),
+                    filename: `html/${key}.html`
                 })
         )
-    ),
-    devServer: {
-        contentBase: path.join(__dirname, "dist"),
-        compress: true,
-        historyApiFallback: true,
-        index: "main.html",
-        port: 4000,
-        hot: true
-    }
-};
+    )
+});

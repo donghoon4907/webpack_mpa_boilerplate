@@ -1,18 +1,19 @@
 import actions from "./actions";
 import mutations from "./mutations";
 import Store from "./store";
-import { TYPE_USER, TYPE_POST } from "./types";
 
-const initialState = {
+const initialState: any = {
     user: {
         data: [],
         total: 0,
-        type: TYPE_USER
+        page: 1,
+        limit: 10
     },
     post: {
         data: [],
         total: 0,
-        type: TYPE_POST
+        page: 1,
+        limit: 10
     }
 };
 

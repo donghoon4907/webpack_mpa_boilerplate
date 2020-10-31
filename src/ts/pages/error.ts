@@ -6,9 +6,7 @@ import "../../sass/index.scss";
  */
 class ErrorPage {
     constructor() {
-        let self = this;
-
-        self.bindEvent();
+        this.bindEvent();
     }
 
     /**

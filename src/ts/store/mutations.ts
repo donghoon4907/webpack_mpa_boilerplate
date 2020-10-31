@@ -1,4 +1,4 @@
-import axios from "axios";
+const axios = require("axios");
 
 const { defaults } = axios;
 defaults.baseURL = process.env.API_BASE_URL;
@@ -6,16 +6,20 @@ defaults.headers.common["app-id"] = process.env.API_APP_ID;
 defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
 export default {
-    async searchUser(state, payload) {
+    async searchUser(state: any, payload: any = {}) {
         try {
             const {
                 data: { data, total }
             } = await axios.get("user", {
-                params: payload
+                params: {
+                    ...payload,
+                    limit: state.user.limit
+                }
             });
 
             state.user = {
                 ...state.user,
+                ...payload,
                 data,
                 total
             };
@@ -25,16 +29,22 @@ export default {
 
         return state;
     },
-    async fetchMoreUser(state, payload) {
+    async fetchMoreUser(state: any) {
         try {
+            const page = state.user.page + 1;
+
             const {
                 data: { data }
             } = await axios.get("user", {
-                params: payload
+                params: {
+                    page,
+                    limit: state.user.limit
+                }
             });
 
             state.user = {
                 ...state.user,
+                page,
                 data: state.user.data.concat(data)
             };
         } catch (e) {
@@ -43,16 +53,20 @@ export default {
 
         return state;
     },
-    async searchPost(state, payload) {
+    async searchPost(state: any, payload: any = {}) {
         try {
             const {
                 data: { data, total }
             } = await axios.get("post", {
-                params: payload
+                params: {
+                    ...payload,
+                    limit: state.post.limit
+                }
             });
 
             state.post = {
                 ...state.post,
+                ...payload,
                 data,
                 total
             };
@@ -62,16 +76,22 @@ export default {
 
         return state;
     },
-    async fetchMorePost(state, payload) {
+    async fetchMorePost(state: any) {
         try {
+            const page = state.post.page + 1;
+
             const {
                 data: { data }
             } = await axios.get("post", {
-                params: payload
+                params: {
+                    page,
+                    limit: state.post.limit
+                }
             });
 
             state.post = {
                 ...state.post,
+                page,
                 data: state.post.data.concat(data)
             };
         } catch (e) {

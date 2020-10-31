@@ -1,14 +1,23 @@
 import Component from "./component";
 import store from "../store";
-import none from "../../pug/templates/none.pug";
+const none = require("../../pug/templates/none.pug");
 
-/**
- * list component
- *
- */
 export default class List extends Component {
-    constructor({ type }) {
-        super({ store, type });
+    /* 하위 클래스에서 정의한 셀렉터 객체 */
+    public readonly selector!: any;
+    /* 하위 클래스에서 정의한 이벤트 구독 키 */
+    public readonly type!: string;
+    /* 하위 클래스에서 정의한 이벤트 바인딩 함수 */
+    public readonly bindEvt!: () => void;
+    /**
+     *
+     * @constructor
+     * @param type  - 이벤트 구독 키
+     */
+    constructor(type: string) {
+        super(type, store);
+
+        this.type = type;
     }
 
     /**
@@ -16,55 +25,57 @@ export default class List extends Component {
      *
      * @memberof List
      */
-    async showSkeleton() {
-        let self = this;
+    public showSkeleton = async () => {
+        const self = this;
 
         const { wrapper } = self.selector;
 
         const $wrapper = document.querySelector(wrapper);
 
-        const skeleton = await import(/* webpackMode: "eager" */ `../../pug/templates/${self.type}_skeleton.pug`).then((obj) => obj.default);
+        const skeleton = await import(/* webpackMode: "eager" */ `../../pug/templates/${self.type}_skeleton.pug`).then(
+            (obj) => obj.default
+        );
 
         $wrapper.insertAdjacentHTML("beforeend", skeleton());
-    }
+    };
 
     /**
      * hide skeleton
      *
      * @memberof List
      */
-    hideSkeleton() {
-        let self = this;
+    public hideSkeleton = () => {
+        const self = this;
 
         const { wrapper, skeleton } = self.selector;
 
         const $wrapper = document.querySelector(wrapper);
 
-        $wrapper.querySelectorAll(skeleton).forEach(($e) => $e.remove());
-    }
+        $wrapper.querySelectorAll(skeleton).forEach(($e: HTMLElement) => $e.remove());
+    };
 
     /**
      * clear list
      *
      * @memberof List
      */
-    clearList() {
-        let self = this;
+    public clearList = () => {
+        const self = this;
 
         const { wrapper } = self.selector;
 
         const $wrapper = document.querySelector(wrapper);
 
         $wrapper.innerHTML = "";
-    }
+    };
 
     /**
      * renderer
      *
      * @memberof List
      */
-    async render() {
-        let self = this;
+    public render = async () => {
+        const self = this;
 
         const { data } = store.state[self.type];
 
@@ -72,7 +83,7 @@ export default class List extends Component {
 
         const $wrapper = document.querySelector(wrapper);
 
-        const newData = data.filter(({ id }) => !$wrapper.querySelector(`[data-key='${id}']`));
+        const newData = data.filter((v: any) => !$wrapper.querySelector(`[data-key='${v.id}']`));
 
         let template;
         if (data.length === 0) {
@@ -86,5 +97,5 @@ export default class List extends Component {
         $wrapper.insertAdjacentHTML("beforeend", template({ data: newData }));
 
         self.bindEvt();
-    }
+    };
 }
