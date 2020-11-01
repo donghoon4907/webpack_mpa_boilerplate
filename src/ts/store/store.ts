@@ -48,6 +48,10 @@ export default class Store {
                 /* 상태 변경 */
                 state[key] = value;
 
+                console.log(`STATE_CHANGE: ${key}`);
+
+                console.log(state);
+
                 /* 상태 변경 이벤트 발행 */
                 self.events.publish(key, self.state);
 
@@ -63,7 +67,7 @@ export default class Store {
      * @param payload
      * @memberof Store
      */
-    dispatch(actionKey: string, payload: any = {}) {
+    dispatch = async (actionKey: string, payload: any = {}) => {
         const self = this;
 
         /* 관리 대상이 아닌 action인 경우 */
@@ -82,7 +86,7 @@ export default class Store {
         }
 
         /* 로그 그룹 생성 및 저장 */
-        console.groupCollapsed(`ACTION: ${actionKey}`);
+        console.group(`ACTION: ${actionKey}`);
 
         /* 작업 상태 변경 */
         self.status = "action";
@@ -91,13 +95,19 @@ export default class Store {
         self.queue.push(actionKey);
 
         /* action 호출 */
-        self.actions[actionKey](self, payload);
+        await self.actions[actionKey](self, payload);
+
+        /* 다음 작업을 위해 작업 상태 재설정 */
+        self.status = "resting";
+
+        /* 작업 중 목록에서 제거 */
+        self.queue.splice(self.queue.indexOf(actionKey), 1);
 
         /* 로그 그룹 종료 */
         console.groupEnd();
 
         return true;
-    }
+    };
 
     /**
      * state changer
@@ -106,7 +116,7 @@ export default class Store {
      * @param payload
      * @memberof Store
      */
-    commit(mutationKey: string, payload: any) {
+    commit = async (mutationKey: string, payload: any) => {
         const self = this;
 
         /* 관리 대상이 아닌 mutation인 경우 */
@@ -118,20 +128,9 @@ export default class Store {
         /* 작업 상태 변경 */
         self.status = "mutation";
 
-        /* mutation 작업 후 반환된 새로운 상태 */
-        const newState = self.mutations[mutationKey](self.state, payload);
-
-        /* 이전 상태와 새로운 상태를 병합 */
-        self.state = Object.assign(self.state, newState);
-
-        console.log(self.state);
-
-        /* 다음 작업을 위해 작업 상태 재설정 */
-        self.status = "resting";
-
-        /* 작업 중 목록에서 제거 */
-        self.queue.splice(self.queue.indexOf(mutationKey), 1);
+        /* mutation 요청 */
+        await self.mutations[mutationKey](self.state, payload);
 
         return true;
-    }
+    };
 }

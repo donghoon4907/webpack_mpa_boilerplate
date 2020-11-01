@@ -16,16 +16,16 @@ export const SEARCH_POST = "searchPost";
 export const FETCHMORE_POST = "fetchMorePost";
 
 export default {
-    [SEARCH_USER](context: any, payload: any) {
-        context.commit(SEARCH_USER, payload);
+    async [SEARCH_USER](context: any, payload: any) {
+        return context.commit(SEARCH_USER, payload);
     },
-    [FETCHMORE_USER](context: any, payload: any) {
-        context.commit(FETCHMORE_USER, payload);
+    async [FETCHMORE_USER](context: any, payload: any) {
+        return context.commit(FETCHMORE_USER, payload);
     },
-    [SEARCH_POST](context: any, payload: any) {
-        context.commit(SEARCH_POST, payload);
+    async [SEARCH_POST](context: any, payload: any) {
+        return context.commit(SEARCH_POST, payload);
     },
-    [FETCHMORE_POST](context: any, payload: any) {
-        context.commit(FETCHMORE_POST, payload);
+    async [FETCHMORE_POST](context: any, payload: any) {
+        return context.commit(FETCHMORE_POST, payload);
     }
 };

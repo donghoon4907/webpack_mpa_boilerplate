@@ -22,8 +22,9 @@ export default class PubSub {
         const { subscribers } = self;
 
         /* 이벤트 검증 */
-        if (!evt) {
-            throw new Error("evt is not defined");
+        if (evt === "") {
+            console.error("evt is not defined");
+            return false;
         }
 
         /* 이벤트 컬렉션이 구성되지 않은 경우 새로운 컬렉션을 추가 */
@@ -31,17 +32,34 @@ export default class PubSub {
             subscribers[evt] = [];
         }
 
-        /* 이벤트 컬렉션에 추가 및 추가된 이벤트의 인덱스 정보 */
-        const index = subscribers[evt].push(callback) - 1;
+        /* 이벤트 컬렉션에 추가 */
+        subscribers[evt].push(callback);
 
-        return {
-            /**
-             * 이벤트 구독 취소
-             */
-            unsubscribe: function () {
-                subscribers[evt].splice(index, 1);
-            }
-        };
+        return true;
+    }
+
+    /**
+     * 이벤트 구독 해제
+     *
+     * @param evt
+     * @memberof PubSub
+     */
+    unsubscribe(evt: string) {
+        const self = this;
+
+        const { subscribers } = self;
+
+        /* 이벤트 검증 */
+        const index = subscribers.indexOf(evt);
+        if (index === -1) {
+            console.error("evt is not subscribed");
+            return false;
+        }
+
+        /* 구독 해제 */
+        subscribers[evt].splice(index, 1);
+
+        return true;
     }
 
     /**
@@ -58,7 +76,8 @@ export default class PubSub {
 
         /* 구독 중인 이벤트 컬렉션이 없는 경우 */
         if (!subscribers[evt]) {
-            throw new Error(`${evt} is not subscribed.`);
+            console.error(`${evt} is not subscribed.`);
+            return false;
         }
 
         /* 이벤트 컬렉션에서 구독 중인 이벤트 발행 */
@@ -69,5 +88,7 @@ export default class PubSub {
                 console.log(e);
             }
         });
+
+        return true;
     }
 }

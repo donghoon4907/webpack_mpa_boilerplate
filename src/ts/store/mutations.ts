@@ -23,11 +23,11 @@ export default {
                 data,
                 total
             };
-        } catch (e) {
-            console.error(e);
-        }
 
-        return state;
+            return state;
+        } catch (e) {
+            throw e;
+        }
     },
     async fetchMoreUser(state: any) {
         try {
@@ -47,11 +47,11 @@ export default {
                 page,
                 data: state.user.data.concat(data)
             };
-        } catch (e) {
-            console.error(e);
-        }
 
-        return state;
+            return state;
+        } catch (e) {
+            throw e;
+        }
     },
     async searchPost(state: any, payload: any = {}) {
         try {
@@ -70,11 +70,11 @@ export default {
                 data,
                 total
             };
-        } catch (e) {
-            console.error(e);
-        }
 
-        return state;
+            return state;
+        } catch (e) {
+            throw e;
+        }
     },
     async fetchMorePost(state: any) {
         try {
@@ -94,10 +94,10 @@ export default {
                 page,
                 data: state.post.data.concat(data)
             };
-        } catch (e) {
-            console.error(e);
-        }
 
-        return state;
+            return state;
+        } catch (e) {
+            throw e;
+        }
     }
 };
