@@ -1,26 +1,27 @@
 import List from "../lib/list";
-import { TYPE_POST } from "../store/types";
+import { MODEL } from "../store/model";
 
 export default class PostList extends List {
     /* 셀렉터 객체 */
-    public readonly selector!: any;
+    public readonly selector: any;
+    /* 이벤트 객체 */
+    public readonly subscriber: any;
     /**
      *
      * @constructor
      */
     constructor() {
-        super(TYPE_POST);
+        super(MODEL.POST);
 
-        this.selector = {
-            wrapper: `[data-js='${TYPE_POST}']`,
-            skeleton: `[data-js='${TYPE_POST}-skeleton']`
-        };
+        this.selector = {};
+
+        this.subscriber = {};
     }
 
     /**
      * bind events
      *
-     * @memberof PostList
+     * @memberof UserList
      */
-    bindEvt = () => {};
+    public bindEvt = () => {};
 }

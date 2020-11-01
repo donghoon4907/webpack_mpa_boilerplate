@@ -1,20 +1,22 @@
-import Component from "./component";
 import store from "../store";
+import { MODEL } from "../store/model";
 
-export default class Total extends Component {
-    /* 하위 클래스에서 정의한 셀렉터 객체 */
-    public readonly selector!: any;
-    /* 하위 클래스에서 정의한 이벤트 구독 키 */
-    public readonly type!: string;
+export default class Total {
+    /* wrap selector */
+    public readonly wrap: string;
+    /* subscribe type */
+    public readonly type: MODEL;
     /**
      *
      * @constructor
-     * @param type  - 이벤트 구독 키
+     * @param type
      */
-    constructor(type: string) {
-        super(type, store);
-
+    constructor(type: MODEL) {
         this.type = type;
+
+        this.wrap = `[data-js='total-${type}']`;
+
+        store.events.subscribe(type, () => this.render());
     }
 
     /**
@@ -22,15 +24,15 @@ export default class Total extends Component {
      *
      * @memberof Total
      */
-    render = () => {
-        const self = this;
+    public render() {
+        const { wrap, type } = this;
 
-        const { total } = store.state[self.type];
+        const { total } = store.state[type];
 
-        const { wrapper } = self.selector;
+        const $wrap = document.querySelector(wrap)!;
 
-        const $wrapper = document.querySelector(wrapper);
+        $wrap.innerHTML = ` (${total.toLocaleString()})`;
 
-        $wrapper.innerHTML = ` (${total.toLocaleString()})`;
-    };
+        return this;
+    }
 }

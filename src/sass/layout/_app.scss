@@ -9,7 +9,7 @@
     padding: 1rem;
     overflow: scroll;
 
-    &__container {
+    &-container {
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
@@ -21,7 +21,7 @@
         overflow: hidden;
     }
 
-    &__section {
+    &-wrapper {
         display: flex;
         flex-wrap: nowrap;
         position: relative;

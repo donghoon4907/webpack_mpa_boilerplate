@@ -1,31 +1,32 @@
-import Component from "./component";
+import Skeleton from "./skeleton";
 import store from "../store";
+import { MODEL } from "../store/model";
 const moreBtn = require("../../pug/templates/more_btn.pug");
 
-/**
- * more btn component
- *
- */
-export default class MoreBtn extends Component {
-    /* 하위 클래스에서 정의한 로더 */
-    public readonly loader!: () => void;
+export default class MoreBtn {
+    /* skeleton instance */
+    public readonly skeleton: Skeleton;
+    /* wrap selector */
+    public readonly wrap: string;
+    /* subscribe type */
+    public readonly type: MODEL;
     /* 하위 클래스에서 정의한 액션 키 */
-    public readonly action!: string;
-    /* 하위 클래스에서 정의한 셀렉터 객체 */
-    public readonly selector!: any;
-    /* 하위 클래스에서 정의한 이벤트 구독 키 */
-    public readonly type!: string;
+    protected readonly action!: string;
     /* 하위 클래스에서 정의한 이벤트 바인딩 함수 */
-    public readonly bindEvt!: () => void;
+    protected readonly bindEvt!: () => void;
     /**
      *
      * @constructor
-     * @param type  - 이벤트 구독 키
+     * @param type
      */
-    constructor(type: string) {
-        super(type, store);
-
+    constructor(type: MODEL) {
         this.type = type;
+
+        this.wrap = `[data-js='more-${type}']`;
+
+        this.skeleton = new Skeleton(type);
+
+        store.events.subscribe(type, () => this.render());
     }
 
     /**
@@ -33,14 +34,16 @@ export default class MoreBtn extends Component {
      *
      * @memberof MoreBtn
      */
-    handleFetchMore = () => {
-        const self = this;
+    public fetchMore = () => {
+        const { skeleton, hide, action } = this;
 
-        self.hideMoreBtn();
+        hide();
 
-        self.loader();
+        skeleton.show();
 
-        store.dispatch(self.action);
+        store.dispatch(action);
+
+        return this;
     };
 
     /**
@@ -48,14 +51,14 @@ export default class MoreBtn extends Component {
      *
      * @memberof MoreBtn
      */
-    hideMoreBtn = () => {
-        const self = this;
+    public hide = () => {
+        const { wrap } = this;
 
-        const { wrapper } = self.selector;
+        const $wrap = document.querySelector<HTMLElement>(wrap)!;
 
-        const $wrapper = document.querySelector(wrapper);
+        $wrap.innerHTML = "";
 
-        $wrapper.innerHTML = "";
+        return this;
     };
 
     /**
@@ -63,24 +66,22 @@ export default class MoreBtn extends Component {
      *
      * @memberof MoreBtn
      */
-    render = () => {
-        const self = this;
-
-        const { type } = self;
+    public render() {
+        const { type, wrap, bindEvt } = this;
 
         const { data, limit } = store.state[type];
 
-        const { wrapper } = self.selector;
-
-        const $wrapper = document.querySelector(wrapper);
+        const $wrap = document.querySelector<HTMLElement>(wrap)!;
 
         let template = "";
         if (data.length > 0 && data.length % limit === 0) {
             template = moreBtn({ type });
         }
 
-        $wrapper.innerHTML = template;
+        $wrap.innerHTML = template;
 
-        self.bindEvt();
-    };
+        bindEvt();
+
+        return this;
+    }
 }

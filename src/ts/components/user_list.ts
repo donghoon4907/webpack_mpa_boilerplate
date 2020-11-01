@@ -1,20 +1,21 @@
 import List from "../lib/list";
-import { TYPE_USER } from "../store/types";
+import { MODEL } from "../store/model";
 
 export default class UserList extends List {
     /* 셀렉터 객체 */
-    public readonly selector!: any;
+    public readonly selector: any;
+    /* 이벤트 객체 */
+    public readonly subscriber: any;
     /**
      *
      * @constructor
      */
     constructor() {
-        super(TYPE_USER);
+        super(MODEL.USER);
 
-        this.selector = {
-            wrapper: `[data-js='${TYPE_USER}']`,
-            skeleton: `[data-js='${TYPE_USER}-skeleton']`
-        };
+        this.selector = {};
+
+        this.subscriber = {};
     }
 
     /**
@@ -22,5 +23,5 @@ export default class UserList extends List {
      *
      * @memberof UserList
      */
-    bindEvt = () => {};
+    public bindEvt = () => {};
 }

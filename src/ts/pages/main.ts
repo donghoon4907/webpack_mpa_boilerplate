@@ -12,37 +12,41 @@ import PostTotal from "../components/post_total";
 
 class MainPage {
     /* 셀렉터 객체 */
-    public readonly selector: any;
-    /* 내부 상태 */
-    public readonly state: any;
-    /* 사용자 목록 */
-    public readonly users: any;
-    /* 포스트 목록 */
-    public readonly posts: any;
+    private readonly selector: any;
+    /* 이벤트 객체 */
+    private readonly observer: any;
+    /* users instance */
+    private readonly users: UserList;
+    /* user total instance */
+    private readonly userTotal: UserTotal;
+    /* user moreBtn instance */
+    private readonly userMoreBtn: UserMoreBtn;
+    /* post instance */
+    private readonly posts: PostList;
+    /* post total instance */
+    private readonly postTotal: PostTotal;
+    /* post moreBtn instance */
+    private readonly postMoreBtn: PostMoreBtn;
 
     constructor() {
         this.selector = {};
 
-        this.state = {};
+        this.observer = {};
 
         this.users = new UserList();
 
-        new UserTotal();
+        this.userTotal = new UserTotal();
 
-        new UserMoreBtn({
-            loader: () => this.users.showSkeleton()
-        });
+        this.userMoreBtn = new UserMoreBtn();
 
         this.posts = new PostList();
 
-        new PostTotal();
+        this.postTotal = new PostTotal();
 
-        new PostMoreBtn({
-            loader: () => this.posts.showSkeleton()
-        });
+        this.postMoreBtn = new PostMoreBtn();
 
-        this.users.showSkeleton();
-        this.posts.showSkeleton();
+        this.users.skeleton.show();
+        this.posts.skeleton.show();
 
         store.dispatch(SEARCH_USER);
         store.dispatch(SEARCH_POST);
