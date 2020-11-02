@@ -1,65 +1,40 @@
 "use strict";
 
 import "../../sass/index.scss";
-import store from "../store";
-import { SEARCH_USER, SEARCH_POST } from "../store/actions";
 import UserList from "../components/user_list";
 import PostList from "../components/post_list";
 import UserMoreBtn from "../components/user_more_btn";
 import PostMoreBtn from "../components/post_more_btn";
 import UserTotal from "../components/user_total";
 import PostTotal from "../components/post_total";
+import Skeleton from "../lib/skeleton";
+import store from "../store";
+import { SEARCH_USER, SEARCH_POST } from "../store/actions";
 
 class MainPage {
-    /* 셀렉터 객체 */
-    private readonly selector: any;
-    /* 이벤트 객체 */
-    private readonly observer: any;
     /* users instance */
-    private readonly users: UserList;
-    /* user total instance */
-    private readonly userTotal: UserTotal;
-    /* user moreBtn instance */
-    private readonly userMoreBtn: UserMoreBtn;
+    users: UserList;
     /* post instance */
-    private readonly posts: PostList;
-    /* post total instance */
-    private readonly postTotal: PostTotal;
-    /* post moreBtn instance */
-    private readonly postMoreBtn: PostMoreBtn;
+    posts: PostList;
 
     constructor() {
-        this.selector = {};
+        const loader = new Skeleton();
 
-        this.observer = {};
+        this.users = new UserList(loader);
+        this.posts = new PostList(loader);
 
-        this.users = new UserList();
+        new UserTotal();
+        new PostTotal();
 
-        this.userTotal = new UserTotal();
+        new UserMoreBtn(loader);
+        new PostMoreBtn(loader);
 
-        this.userMoreBtn = new UserMoreBtn();
-
-        this.posts = new PostList();
-
-        this.postTotal = new PostTotal();
-
-        this.postMoreBtn = new PostMoreBtn();
-
-        this.users.skeleton.show();
-        this.posts.skeleton.show();
-
+        this.users.showLoader();
         store.dispatch(SEARCH_USER);
+
+        this.posts.showLoader();
         store.dispatch(SEARCH_POST);
-
-        this.bindEvent();
     }
-
-    /**
-     * bind events
-     *
-     * @memberof MainPage
-     */
-    bindEvent = () => {};
 }
 
 new MainPage();

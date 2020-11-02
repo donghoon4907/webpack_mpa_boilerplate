@@ -1,43 +1,58 @@
-import Skeleton from "./skeleton";
-import store from "../store";
+import { Renderable } from "../interface/render";
+import { Loadable, Loader } from "../interface/loader";
 import { MODEL } from "../store/model";
+import store from "../store";
 const none = require("../../pug/templates/none.pug");
 
-export default class List {
-    /* skeleton instance */
-    public skeleton: Skeleton;
-    /* wrap selector */
-    public readonly wrap: string;
-    /* subscribe type */
-    public readonly type: MODEL;
-    /* 하위 클래스에서 정의한 이벤트 바인딩 함수 */
-    protected readonly bindEvt!: () => void;
+export default abstract class List implements Renderable, Loadable {
     /**
      *
      * @constructor
-     * @param type
+     * @param loader
      */
-    constructor(type: MODEL) {
-        this.type = type;
-
-        this.wrap = `[data-js='${type}']`;
-
-        this.skeleton = new Skeleton(type);
-
-        store.events.subscribe(type, () => this.render());
+    constructor(protected readonly _model: MODEL, protected readonly _loader: Loader) {
+        store.events.subscribe(_model, () => this.render());
     }
+
+    abstract bindEvt(): void;
+
+    /**
+     * show loader
+     *
+     * @memberof List
+     */
+    showLoader = () => {
+        const { _model } = this;
+
+        this._loader.show(_model);
+
+        return this;
+    };
+
+    /**
+     * hide loader
+     *
+     * @memberof List
+     */
+    hideLoader = () => {
+        const { _model } = this;
+
+        this._loader.hide(_model);
+
+        return this;
+    };
 
     /**
      * renderer
      *
      * @memberof List
      */
-    public async render() {
-        const { skeleton, wrap, type, bindEvt } = this;
+    render = async () => {
+        const { hideLoader, _model, bindEvt } = this;
 
-        const { data } = store.state[type];
+        const { data } = store.state[_model];
 
-        const $wrap = document.querySelector<HTMLElement>(wrap)!;
+        const $wrap = document.querySelector<HTMLElement>(`[data-js='${_model}']`)!;
 
         const newData = data.filter((v: any) => !$wrap.querySelector<HTMLElement>(`[data-key='${v.id}']`));
 
@@ -45,15 +60,13 @@ export default class List {
         if (data.length === 0) {
             template = none;
         } else {
-            template = await import(/* webpackMode: "eager" */ `../../pug/templates/${type}.pug`).then((obj) => obj.default);
+            template = await import(/* webpackMode: "eager" */ `../../pug/templates/${_model}.pug`).then((obj) => obj.default);
         }
 
-        skeleton.hide();
+        hideLoader();
 
         $wrap.insertAdjacentHTML("beforeend", template({ data: newData }));
 
         bindEvt();
-
-        return this;
-    }
+    };
 }

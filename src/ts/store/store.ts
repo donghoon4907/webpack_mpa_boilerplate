@@ -67,7 +67,7 @@ export default class Store {
      * @param payload
      * @memberof Store
      */
-    dispatch = async (actionKey: string, payload: any = {}) => {
+    dispatch(actionKey: string, payload: any = {}) {
         const self = this;
 
         /* 관리 대상이 아닌 action인 경우 */
@@ -85,9 +85,6 @@ export default class Store {
             }
         }
 
-        /* 로그 그룹 생성 및 저장 */
-        console.group(`ACTION: ${actionKey}`);
-
         /* 작업 상태 변경 */
         self.status = "action";
 
@@ -95,19 +92,8 @@ export default class Store {
         self.queue.push(actionKey);
 
         /* action 호출 */
-        await self.actions[actionKey](self, payload);
-
-        /* 다음 작업을 위해 작업 상태 재설정 */
-        self.status = "resting";
-
-        /* 작업 중 목록에서 제거 */
-        self.queue.splice(self.queue.indexOf(actionKey), 1);
-
-        /* 로그 그룹 종료 */
-        console.groupEnd();
-
-        return true;
-    };
+        self.actions[actionKey](self, payload);
+    }
 
     /**
      * state changer
@@ -116,7 +102,7 @@ export default class Store {
      * @param payload
      * @memberof Store
      */
-    commit = async (mutationKey: string, payload: any) => {
+    async commit(mutationKey: string, payload: any) {
         const self = this;
 
         /* 관리 대상이 아닌 mutation인 경우 */
@@ -125,12 +111,22 @@ export default class Store {
             return false;
         }
 
+        /* 로그 그룹 생성 및 저장 */
+        console.group(`ACTION: ${mutationKey}`);
+
         /* 작업 상태 변경 */
         self.status = "mutation";
 
         /* mutation 요청 */
         await self.mutations[mutationKey](self.state, payload);
 
-        return true;
-    };
+        /* 다음 작업을 위해 작업 상태 재설정 */
+        self.status = "resting";
+
+        /* 작업 중 목록에서 제거 */
+        self.queue.splice(self.queue.indexOf(mutationKey), 1);
+
+        /* 로그 그룹 종료 */
+        console.groupEnd();
+    }
 }

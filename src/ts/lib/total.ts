@@ -1,22 +1,14 @@
+import { Renderable } from "../interface/render";
 import store from "../store";
 import { MODEL } from "../store/model";
 
-export default class Total {
-    /* wrap selector */
-    public readonly wrap: string;
-    /* subscribe type */
-    public readonly type: MODEL;
+export default abstract class Total implements Renderable {
     /**
      *
      * @constructor
-     * @param type
      */
-    constructor(type: MODEL) {
-        this.type = type;
-
-        this.wrap = `[data-js='total-${type}']`;
-
-        store.events.subscribe(type, () => this.render());
+    constructor(protected readonly _model: MODEL) {
+        store.events.subscribe(_model, () => this.render());
     }
 
     /**
@@ -24,15 +16,13 @@ export default class Total {
      *
      * @memberof Total
      */
-    public render() {
-        const { wrap, type } = this;
+    render = () => {
+        const { _model } = this;
 
-        const { total } = store.state[type];
+        const { total } = store.state[_model];
 
-        const $wrap = document.querySelector(wrap)!;
+        const $wrap = document.querySelector(`[data-js='total-${_model}']`)!;
 
         $wrap.innerHTML = ` (${total.toLocaleString()})`;
-
-        return this;
-    }
+    };
 }

@@ -1,29 +1,26 @@
 import { fromEvent } from "rxjs";
+import { Loader } from "../interface/loader";
 import MoreBtn from "../lib/more_btn";
 import { FETCHMORE_USER } from "../store/actions";
 import { MODEL } from "../store/model";
+import store from "../store";
 
 export default class UserMoreBtn extends MoreBtn {
     /* 셀렉터 객체 */
-    public readonly selector: any;
+    private readonly _selector: any;
     /* 이벤트 객체 */
-    public readonly subscriber: any;
-    /* 액션 키 */
-    protected readonly action: any;
+    private readonly _subscriber: any = {};
     /**
      *
      * @constructor
+     * @param loader
      */
-    constructor() {
-        super(MODEL.USER);
+    constructor(protected readonly _loader: Loader) {
+        super(MODEL.USER, _loader);
 
-        this.selector = {
+        this._selector = {
             btn: `[data-js=morebtn-${MODEL.USER}]`
         };
-
-        this.subscriber = {};
-
-        this.action = FETCHMORE_USER;
     }
 
     /**
@@ -31,11 +28,28 @@ export default class UserMoreBtn extends MoreBtn {
      *
      * @memberof UserMoreBtn
      */
-    public bindEvt = () => {
-        const { selector, subscriber, fetchMore } = this;
+    bindEvt = () => {
+        const { _selector, _subscriber, fetchMore } = this;
 
-        const $btn = document.querySelector(selector.btn);
+        const $btn = document.querySelector(_selector.btn);
 
-        subscriber.btn$ = fromEvent($btn, "click").subscribe(() => fetchMore());
+        _subscriber.btn$ = fromEvent($btn, "click").subscribe(() => fetchMore());
+    };
+
+    /**
+     * fetch more
+     *
+     * @memberof UserMoreBtn
+     */
+    fetchMore = () => {
+        const { _loader, _model, hide } = this;
+
+        hide();
+
+        _loader.show(_model);
+
+        store.dispatch(FETCHMORE_USER);
+
+        return this;
     };
 }

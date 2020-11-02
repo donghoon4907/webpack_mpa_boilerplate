@@ -16,7 +16,7 @@ export default class PubSub {
      * @param callback
      * @memberof PubSub
      */
-    subscribe(evt: string, callback: () => void) {
+    subscribe(evt: string, callback: any) {
         const self = this;
 
         const { subscribers } = self;

@@ -1,47 +1,42 @@
-import Skeleton from "./skeleton";
+import { Renderable } from "../interface/render";
+import { Loadable, Loader } from "../interface/loader";
 import store from "../store";
 import { MODEL } from "../store/model";
 const moreBtn = require("../../pug/templates/more_btn.pug");
 
-export default class MoreBtn {
-    /* skeleton instance */
-    public readonly skeleton: Skeleton;
-    /* wrap selector */
-    public readonly wrap: string;
-    /* subscribe type */
-    public readonly type: MODEL;
-    /* 하위 클래스에서 정의한 액션 키 */
-    protected readonly action!: string;
-    /* 하위 클래스에서 정의한 이벤트 바인딩 함수 */
-    protected readonly bindEvt!: () => void;
+export default abstract class MoreBtn implements Renderable, Loadable {
     /**
      *
      * @constructor
-     * @param type
      */
-    constructor(type: MODEL) {
-        this.type = type;
-
-        this.wrap = `[data-js='more-${type}']`;
-
-        this.skeleton = new Skeleton(type);
-
-        store.events.subscribe(type, () => this.render());
+    constructor(protected readonly _model: MODEL, protected readonly _loader: Loader) {
+        store.events.subscribe(_model, () => this.render());
     }
 
+    abstract bindEvt: () => void;
+
     /**
-     * fetch more
+     * show loader
      *
      * @memberof MoreBtn
      */
-    public fetchMore = () => {
-        const { skeleton, hide, action } = this;
+    showLoader = () => {
+        const { _model } = this;
 
-        hide();
+        this._loader.show(_model);
 
-        skeleton.show();
+        return this;
+    };
 
-        store.dispatch(action);
+    /**
+     * hide loader
+     *
+     * @memberof MoreBtn
+     */
+    hideLoader = () => {
+        const { _model } = this;
+
+        this._loader.hide(_model);
 
         return this;
     };
@@ -51,10 +46,10 @@ export default class MoreBtn {
      *
      * @memberof MoreBtn
      */
-    public hide = () => {
-        const { wrap } = this;
+    hide = () => {
+        const { _model } = this;
 
-        const $wrap = document.querySelector<HTMLElement>(wrap)!;
+        const $wrap = document.querySelector<HTMLElement>(`[data-js='morebtn-${_model}']`)!;
 
         $wrap.innerHTML = "";
 
@@ -66,22 +61,22 @@ export default class MoreBtn {
      *
      * @memberof MoreBtn
      */
-    public render() {
-        const { type, wrap, bindEvt } = this;
+    render = () => {
+        const { hideLoader, _model, bindEvt } = this;
 
-        const { data, limit } = store.state[type];
+        const { data, limit } = store.state[_model];
 
-        const $wrap = document.querySelector<HTMLElement>(wrap)!;
+        const $wrap = document.querySelector<HTMLElement>(`[data-js='more-${_model}']`)!;
 
         let template = "";
         if (data.length > 0 && data.length % limit === 0) {
-            template = moreBtn({ type });
+            template = moreBtn({ type: _model });
         }
+
+        hideLoader();
 
         $wrap.innerHTML = template;
 
         bindEvt();
-
-        return this;
-    }
+    };
 }

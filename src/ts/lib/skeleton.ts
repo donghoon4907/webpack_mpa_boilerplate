@@ -1,30 +1,14 @@
+import { Loader } from "../interface/loader";
 import { MODEL } from "../store/model";
 
-export default class Skeleton {
-    /* wrap selector */
-    public readonly wrap: string;
-    /* subscribe type */
-    public readonly type: MODEL;
-    /**
-     *
-     * @constructor
-     * @param type  - skeleton wrap selector
-     */
-    constructor(type: MODEL) {
-        this.wrap = `[data-js='${type}']`;
-
-        this.type = type;
-    }
-
+export default class Skeleton implements Loader {
     /**
      * show skeleton
      *
      * @memberof Skeleton
      */
-    public async show() {
-        const { wrap, type } = this;
-
-        const $wrap = document.querySelector<HTMLElement>(wrap)!;
+    async show(type: MODEL) {
+        const $wrap = document.querySelector<HTMLElement>(`[data-js='${type}']`)!;
 
         const template = await import(/* webpackMode: "eager" */ `../../pug/templates/${type}_skeleton.pug`).then((obj) => obj.default);
 
@@ -36,12 +20,10 @@ export default class Skeleton {
     /**
      * hide skeleton
      *
-     * @memberof List
+     * @memberof Skeleton
      */
-    public hide() {
-        const { wrap, type } = this;
-
-        const $wrap = document.querySelector<HTMLElement>(wrap)!;
+    hide(type: MODEL) {
+        const $wrap = document.querySelector<HTMLElement>(`[data-js='${type}']`)!;
 
         const skeletons = $wrap.querySelectorAll(`[data-js='${type}-skeleton']`);
 
