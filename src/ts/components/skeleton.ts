@@ -1,4 +1,4 @@
-import { Loader } from "../interface/loader";
+import { Loader } from "../interfaces/loader";
 import userSkeleton from "../../pug/templates/user_skeleton.pug";
 import postSkeleton from "../../pug/templates/post_skeleton.pug";
 

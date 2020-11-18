@@ -1,4 +1,4 @@
-import { LoggerFactory } from "../factory/logger";
+import { LoggerFactory } from "../factories/logger";
 
 const logger = LoggerFactory.getInstance();
 

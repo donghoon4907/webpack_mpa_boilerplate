@@ -1,4 +1,4 @@
-import { Loader } from "../interface/loader";
+import { Loader } from "../interfaces/loader";
 import List from "./list";
 import store from "../store";
 import { MODEL } from "../store/model";

@@ -1,5 +1,5 @@
-import { Logger } from "../interface/logger";
-import { ConsoleLogger } from "../lib/logger";
+import { Logger } from "../interfaces/logger";
+import { ConsoleLogger } from "../libs/logger";
 
 let logger: Logger;
 

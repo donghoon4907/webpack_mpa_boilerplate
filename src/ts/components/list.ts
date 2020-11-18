@@ -1,4 +1,4 @@
-import { Render } from "../interface/render";
+import { Render } from "../interfaces/render";
 import { MODEL } from "../store/model";
 import store from "../store";
 

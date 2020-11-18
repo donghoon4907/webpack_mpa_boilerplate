@@ -1,4 +1,4 @@
-import { http, receive } from "../lib/http";
+import { http, receive } from "../libs/http";
 
 type FetchUserPayload = {
     limit?: number;

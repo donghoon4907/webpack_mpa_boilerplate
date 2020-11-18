@@ -1,4 +1,4 @@
-import { Logger } from "../interface/logger";
+import { Logger } from "../interfaces/logger";
 
 export class ConsoleLogger implements Logger {
     log(message: string): void {

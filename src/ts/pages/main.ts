@@ -10,7 +10,7 @@ import { UserSkeletonLoader, postSkeletonLoader } from "../components/skeleton";
 import store from "../store";
 import { SEARCH_USER, FETCHMORE_USER } from "../actions/user";
 import { SEARCH_POST, FETCHMORE_POST } from "../actions/post";
-import { logable } from "../decorator/logable";
+import { logable } from "../decorators/logable";
 
 class App {
     /* user instance */

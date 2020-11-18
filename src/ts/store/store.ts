@@ -1,4 +1,4 @@
-import PubSub from "../lib/pubsub";
+import PubSub from "../libs/pubsub";
 
 export default class Store {
     /* 등록한 액션 함수 */

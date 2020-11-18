@@ -1,4 +1,4 @@
-import { Loader } from "../interface/loader";
+import { Loader } from "../interfaces/loader";
 import List from "./list";
 import { MODEL } from "../store/model";
 import post from "../../pug/templates/post.pug";
