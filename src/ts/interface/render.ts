@@ -1,3 +1,3 @@
-export interface Renderable {
-    render: () => void;
+export interface Render {
+    render: (state: any) => void;
 }

@@ -1,0 +1,25 @@
+.card {
+    height: 10rem;
+    width: 8rem;
+    border-radius: 0.3rem;
+    position: absolute;
+    box-shadow: 0 0 30px transparentize(#000, 0.8);
+    left: 50%;
+    top: 50%;
+    transform-origin: center 200%;
+    background: white;
+
+    &-wrapper {
+        position: relative;
+        height: 100%;
+        width: 100%;
+
+        $angle: 60deg;
+
+        @for $i from 1 through 10 {
+            div:nth-child(#{$i}) {
+                transform: translate(-50%, -50%) rotate(-$angle / 2 + $angle / 11 * $i);
+            }
+        }
+    }
+}

@@ -1,10 +1,7 @@
 export default class PubSub {
     /* 구독 중인 이벤트 목록 */
-    public readonly subscribers: any;
-    /**
-     *
-     * @constructor
-     */
+    public subscribers: any;
+
     constructor() {
         this.subscribers = {};
     }
@@ -17,9 +14,7 @@ export default class PubSub {
      * @memberof PubSub
      */
     subscribe(evt: string, callback: any) {
-        const self = this;
-
-        const { subscribers } = self;
+        const { subscribers } = this;
 
         /* 이벤트 검증 */
         if (evt === "") {
@@ -34,8 +29,6 @@ export default class PubSub {
 
         /* 이벤트 컬렉션에 추가 */
         subscribers[evt].push(callback);
-
-        return true;
     }
 
     /**
@@ -45,9 +38,7 @@ export default class PubSub {
      * @memberof PubSub
      */
     unsubscribe(evt: string) {
-        const self = this;
-
-        const { subscribers } = self;
+        const { subscribers } = this;
 
         /* 이벤트 검증 */
         const index = subscribers.indexOf(evt);
@@ -58,8 +49,6 @@ export default class PubSub {
 
         /* 구독 해제 */
         subscribers[evt].splice(index, 1);
-
-        return true;
     }
 
     /**
@@ -69,10 +58,8 @@ export default class PubSub {
      * @param data
      * @memberof PubSub
      */
-    publish(evt: string, data: any = {}) {
-        const self = this;
-
-        const { subscribers } = self;
+    publish(evt: string, data: any) {
+        const { subscribers } = this;
 
         /* 구독 중인 이벤트 컬렉션이 없는 경우 */
         if (!subscribers[evt]) {
@@ -88,7 +75,5 @@ export default class PubSub {
                 console.log(e);
             }
         });
-
-        return true;
     }
 }

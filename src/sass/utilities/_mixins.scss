@@ -29,7 +29,6 @@
     table-layout: fixed;
     width: 100%;
     white-space: nowrap;
-    box-sizing: border-box;
 }
 @mixin text-truncate {
     display: table-cell;

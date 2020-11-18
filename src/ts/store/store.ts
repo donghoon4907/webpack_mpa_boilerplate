@@ -15,7 +15,7 @@ export default class Store {
     private queue: Array<string>;
 
     constructor(params: any) {
-        const self = this;
+        let self = this;
 
         this.actions = {};
 
@@ -50,8 +50,6 @@ export default class Store {
 
                 console.log(`STATE_CHANGE: ${key}`);
 
-                console.log(state);
-
                 /* 상태 변경 이벤트 발행 */
                 self.events.publish(key, self.state);
 
@@ -67,7 +65,7 @@ export default class Store {
      * @param payload
      * @memberof Store
      */
-    dispatch(actionKey: string, payload: any = {}) {
+    dispatch(actionKey: string, payload: any, showLoader?: () => void) {
         const self = this;
 
         /* 관리 대상이 아닌 action인 경우 */
@@ -83,6 +81,11 @@ export default class Store {
                 console.error(`Action "${actionKey} is not finished yet`);
                 return false;
             }
+        }
+
+        /* 로딩 UI 보이기 */
+        if (typeof showLoader === "function") {
+            showLoader();
         }
 
         /* 작업 상태 변경 */
@@ -118,7 +121,9 @@ export default class Store {
         self.status = "mutation";
 
         /* mutation 요청 */
-        await self.mutations[mutationKey](self.state, payload);
+        const newState = await self.mutations[mutationKey](self.state, payload);
+
+        console.log(newState);
 
         /* 다음 작업을 위해 작업 상태 재설정 */
         self.status = "resting";

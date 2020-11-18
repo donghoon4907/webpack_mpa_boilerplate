@@ -1,10 +1,11 @@
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 /* entry points */
-const entry = ["main", "error"];
+const entry = ["main", "babylon"];
 
 module.exports = ({ mode }) => ({
     entry: entry.reduce((obj, cur) => {
@@ -42,7 +43,11 @@ module.exports = ({ mode }) => ({
             path: `./.env.${mode}`
         }),
         /* 빌드 전에 기존 빌드 폴더를 제거 */
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        /* 정적 파일 복사 */
+        new CopyPlugin({
+            patterns: [{ from: "./src/assets", to: "assets" }]
+        })
     ].concat(
         entry.map(
             (key) =>

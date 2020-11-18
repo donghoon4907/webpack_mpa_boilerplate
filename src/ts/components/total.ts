@@ -1,12 +1,8 @@
-import { Renderable } from "../interface/render";
+import { Render } from "../interface/render";
 import store from "../store";
 import { MODEL } from "../store/model";
 
-export default abstract class Total implements Renderable {
-    /**
-     *
-     * @constructor
-     */
+export default class Total implements Render {
     constructor(protected readonly _model: MODEL) {
         store.events.subscribe(_model, () => this.render());
     }
@@ -21,7 +17,7 @@ export default abstract class Total implements Renderable {
 
         const { total } = store.state[_model];
 
-        const $wrap = document.querySelector(`[data-js='total-${_model}']`)!;
+        const $wrap = document.querySelector(`[data-target='total-${_model}']`)!;
 
         $wrap.innerHTML = ` (${total.toLocaleString()})`;
     };

@@ -4,11 +4,12 @@ block head
     title demo
 
 block content 
-    h2(class="app__title") Users 
-        span(data-js="total-user")
-    div(class="user-card-wrapper" data-js="user")
-    div(class="app__more" data-js="more-user")
-    h2(class="app__title") Posts
-        span(data-js="total-post")
-    div(class="post-card-wrapper" data-js="post")
-    div(class="app__more" data-js="more-post")
+    main(class="app__column main")
+        h2(class="main__title") Users 
+            span(data-target="total-user")
+        div(class="user-card-wrapper" data-target="user")
+        div(class="main__more" data-target="more-user")
+        h2(class="main__title") Posts
+            span(data-target="total-post")
+        div(class="post-card-wrapper" data-target="post")
+        div(class="main__more" data-target="more-post")

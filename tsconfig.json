@@ -9,7 +9,8 @@
         "moduleResolution": "node",
         "noImplicitAny": true,
         "allowJs": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true
     },
     "include": ["src"]
 }
