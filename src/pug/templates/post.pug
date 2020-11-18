@@ -1,20 +1,19 @@
-each item, index in data
-    div(class="post-card" data-key=item.id data-target="list")
-        div(class="post-card__column")
-            div(class="post-card__header")
-                img(class="post-card__avatar" src=item.owner.picture alt="avatar")
-                div(class="post-card-user")
-                    div(class="post-card-user__cell")
-                        div(class="post-card__username")=`${item.owner.firstName} ${item.owner.lastName}`
-                    div(class="post-card-user__cell")
-                        div(class="post-card__email")=item.owner.email
-            div(class="post-card__body")
-                img(class="post-card__thumb" src=item.image alt="thumbnail")
-                div(class="post-card__taginfo")
-                    each tag in item.tags
-                        div(class="post-card__tag")=tag
-                div(class="text-truncate")=item.text
-                if (item.link) 
-                    div(class="post-card__urlinfo")
-                        a(class="post-card__url" target="_blank" rel="noopener noreferrer external nofollow" href="https://www.instagram.com/teddyosterblomphoto/") https://www.instagram.com/teddyosterblomphoto/
-            div(class="post-card__footer")
+div(class="post-card" data-key=id data-target="list")
+    div(class="post-card__column")
+        div(class="post-card__header")
+            img(class="post-card__avatar" src=owner.picture alt="avatar")
+            div(class="post-card-user")
+                div(class="post-card-user__cell")
+                    div(class="post-card__username")=`${owner.firstName} ${owner.lastName}`
+                div(class="post-card-user__cell")
+                    div(class="post-card__email")=owner.email
+        div(class="post-card__body")
+            img(class="post-card__thumb" src=image alt="thumbnail")
+            div(class="post-card__taginfo")
+                each tag in tags
+                    div(class="post-card__tag")=tag
+            div(class="text-truncate")=text
+            if (link) 
+                div(class="post-card__urlinfo")
+                    a(class="post-card__url" target="_blank" rel="noopener noreferrer external nofollow" href=link)=link
+        div(class="post-card__footer")

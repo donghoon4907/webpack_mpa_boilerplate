@@ -1,3 +1,3 @@
 export interface Loader {
-    template(): string;
+    template(count?: number): string;
 }

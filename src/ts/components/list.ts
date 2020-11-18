@@ -1,51 +1,64 @@
 import { Render } from "../interfaces/render";
-import { MODEL } from "../store/model";
+import { Loader } from "../interfaces/loader";
+import Template from "../components/template";
+import none from "../../pug/templates/none.pug";
 import store from "../store";
 
-export default abstract class List implements Render {
+export default class List implements Render {
     /**
+     * List component
      *
-     * @constructor
-     * @param _model
+     * @param _loader
+     * @param _item
+     * @property `showLoader`
+     * @property `hideLoader`
+     * @property `render`
      */
-    constructor(protected readonly _model: MODEL) {
-        store.events.subscribe(_model, (state: any) => this.render(state));
+    constructor(private readonly _loader: Loader, private readonly _item: Template) {
+        store.events.subscribe(_item.model, (state: any) => this.render(state));
     }
 
     /**
-     * bind event
-     *
-     * @memberof List
+     * Show loader
      */
-    abstract bindEvt: () => void;
+    showLoader = () => {
+        const $wrap = document.querySelector(`[data-target='${this._item.model}']`);
+
+        $wrap?.insertAdjacentHTML("beforeend", this._loader.template());
+    };
 
     /**
-     * show loader
-     *
-     * @memberof List
+     * Hide loader
      */
-    abstract showLoader: () => void;
+    hideLoader = () => {
+        const $wrap = document.querySelector(`[data-target='${this._item.model}']`);
+
+        const skeletons = $wrap?.querySelectorAll("[data-target='skeleton']");
+
+        skeletons?.forEach(($e) => $e.remove());
+    };
 
     /**
-     * hide loader
-     *
-     * @memberof List
+     * Renderer
      */
-    abstract hideLoader: () => void;
+    render = (state: any) => {
+        const { hideLoader, _item } = this;
 
-    /**
-     * renderer
-     *
-     * @memberof List
-     */
-    abstract render: (state: any) => void;
+        const { data } = state[_item.model];
 
-    /**
-     * get model
-     *
-     * @memberof List
-     */
-    get model() {
-        return this._model;
-    }
+        const $wrap = document.querySelector(`[data-target='${_item.model}']`);
+
+        const newData = data.filter((v: any) => !$wrap?.querySelector(`[data-key='${v.id}']`));
+
+        let template;
+        if (data.length === 0) {
+            template = none;
+        } else {
+            template = newData.reduce((acc: string, cur: any) => acc + _item.template(cur), "");
+        }
+
+        hideLoader();
+
+        $wrap?.insertAdjacentHTML("beforeend", template);
+    };
 }

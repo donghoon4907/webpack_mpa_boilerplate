@@ -4,14 +4,18 @@ import store from "../store";
 import moreBtn from "../../pug/templates/more_btn.pug";
 
 export default class MoreBtn implements Render {
+    /**
+     * More button component
+     *
+     * @param _model
+     * @property `render`
+     */
     constructor(private readonly _model: MODEL) {
         store.events.subscribe(_model, () => this.render());
     }
 
     /**
-     * renderer
-     *
-     * @memberof MoreBtn
+     * Renderer
      */
     render = () => {
         const { _model } = this;

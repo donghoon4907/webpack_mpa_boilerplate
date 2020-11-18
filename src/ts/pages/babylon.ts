@@ -1,22 +1,70 @@
 "use strict";
 
 import "../../sass/index.scss";
-import { Scene, Engine, ArcRotateCamera, Vector3, MeshBuilder, HemisphericLight, Sound, StandardMaterial, Color3, Texture, Vector4, Mesh } from "babylonjs";
+import { Scene, Engine, ArcRotateCamera, FreeCamera, Vector3, MeshBuilder, HemisphericLight, Sound, StandardMaterial, Color3, Texture, Vector4, Mesh } from "babylonjs";
 
 class App {
+    engine: Engine;
+
     constructor() {
         const $canvas = document.querySelector<HTMLCanvasElement>("#renderCanvas");
 
-        const engine = new Engine($canvas, true); /* Generate the BABYLON 3D engine */
+        this.engine = new Engine($canvas, true); /* Generate the BABYLON 3D engine */
 
-        const scene = new Scene(engine); /* Create basic scene */
+        const scene = new Scene(this.engine); /* Create basic scene */
 
-        const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 20, new Vector3(0, 0, 0), scene); /* Create camera in scene */
+        const camera = new FreeCamera("camera1", new Vector3(0, 0, -20), scene);
+
+        // const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 20, new Vector3(0, 0, 0), scene); /* Create camera in scene */
 
         camera.attachControl($canvas, true); /* Attach the camera to the canvas */
 
-        new HemisphericLight("light", new Vector3(0, 1, 0), scene); /* Create a basic light in scene */
+        camera.keysUp.push(87); //W
+        camera.keysDown.push(83); //D
+        camera.keysLeft.push(65); //A
+        camera.keysRight.push(68); //S
 
+        const box = Mesh.CreateBox("box", 4, scene);
+
+        //new HemisphericLight("light", new Vector3(0, 1, 0), scene); /* Create a basic light in scene */
+
+        //base
+        // const outline = [new Vector3(-0.3, 0, -0.1), new Vector3(0.2, 0, -0.1)];
+        //curved front
+        // for (let i = 0; i < 20; i++) {
+        //     outline.push(new Vector3(0.2 * Math.cos((i * Math.PI) / 40), 0, 0.2 * Math.sin((i * Math.PI) / 40) - 0.1));
+        // }
+        //top
+        // outline.push(new Vector3(0, 0, 0.1));
+        //outline.push(new Vector3(-0.3, 0, 0.1));
+
+        // console.log(outline);
+
+        //const car = MeshBuilder.ExtrudePolygon("car", { shape: [], depth: 0.2 }, scene);
+
+        // const wheelRB = MeshBuilder.CreateCylinder("wheelRB", {diameter: 0.125, height: 0.05})
+        // wheelRB.parent = car;
+        // wheelRB.position.z = -0.1;
+        // wheelRB.position.x = -0.2;
+        // wheelRB.position.y = 0.035;
+        // wheelRF = wheelRB.clone("wheelRF");
+        // wheelRF.position.x = 0.1;
+        // wheelLB = wheelRB.clone("wheelLB");
+        // wheelLB.position.y = -0.2 - 0.035;
+        // wheelLF = wheelRF.clone("wheelLF");
+        // wheelLF.position.y = -0.2 - 0.035;
+
+        /* Register a render loop to repeatedly render the scene */
+        this.engine.runRenderLoop(function () {
+            scene.render();
+        });
+        /* Watch for browser/canvas resize events */
+        window.addEventListener("resize", () => {
+            this.engine.resize();
+        });
+    }
+
+    createVillage = (scene: Scene) => {
         const faceUV = [new Vector4(0.5, 0.0, 0.75, 1.0), new Vector4(0.0, 0.0, 0.25, 1.0), new Vector4(0.25, 0, 0.5, 1.0), new Vector4(0.75, 0, 1.0, 1.0)];
 
         const box = MeshBuilder.CreateBox("box", { width: 2, height: 2, depth: 2, faceUV: faceUV, wrap: true }, scene); /* Create box mesh in scene */
@@ -69,20 +117,7 @@ class App {
         groundMat.diffuseColor = new Color3(0, 1, 0);
 
         ground.material = groundMat;
-
-        {
-            //new Sound("name", "/assets/mp3/test.mp3", scene, null, { loop: true, autoplay: true });
-        }
-
-        /* Register a render loop to repeatedly render the scene */
-        engine.runRenderLoop(function () {
-            scene.render();
-        });
-        /* Watch for browser/canvas resize events */
-        window.addEventListener("resize", () => {
-            engine.resize();
-        });
-    }
+    };
 }
 
 new App();

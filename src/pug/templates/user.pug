@@ -1,8 +1,7 @@
-each item, index in data
-    div(class="user-card" data-key=item.id data-target="list")
-        div(class="user-card__column")
-            div(class="user-card__header")
-            div(class="user-card__body")
-                img(class="user-card__avatar" src=item.picture alt="avatar")
-            div(class="user-card__footer")
-                h5(class="user-card__title")=`${item.firstName} ${item.lastName}`
+div(class="user-card" data-key=id data-target="list")
+    div(class="user-card__column")
+        div(class="user-card__header")
+        div(class="user-card__body")
+            img(class="user-card__avatar" src=picture alt="avatar")
+        div(class="user-card__footer")
+            h5(class="user-card__title")=`${firstName} ${lastName}`

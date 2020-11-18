@@ -3,14 +3,18 @@ import store from "../store";
 import { MODEL } from "../store/model";
 
 export default class Total implements Render {
+    /**
+     * Total component
+     *
+     * @param _model
+     * @property `render`
+     */
     constructor(protected readonly _model: MODEL) {
         store.events.subscribe(_model, () => this.render());
     }
 
     /**
      * renderer
-     *
-     * @memberof Total
      */
     render = () => {
         const { _model } = this;

@@ -4,7 +4,8 @@ import * as E from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/pipeable";
 
 /**
- * @description  http 요청
+ * Request `http`
+ *
  * @param method http 요청 메서드
  * @param url    도메인을 제외한 endpoint
  * @param params 추가 요청 데이터
@@ -26,7 +27,8 @@ export function http(method: Method, url: string, params: any) {
 }
 
 /**
- * @description http 요청 응답 처리
+ * Processing after `http` request
+ *
  * @param res http 요청 응답 정보
  */
 export function receive(res: E.Either<Error, any>) {
@@ -46,7 +48,8 @@ export function receive(res: E.Either<Error, any>) {
 }
 
 /**
- * @description http 요청 에러 처리
+ * Request `http` error handling
+ *
  * @param status http 요청 상태 코드
  * @param config http 요청 설정 정보
  */

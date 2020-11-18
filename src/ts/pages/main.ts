@@ -1,12 +1,13 @@
 "use strict";
 
 import "../../sass/index.scss";
-import { fromEvent } from "rxjs";
-import UserList from "../components/user_list";
-import PostList from "../components/post_list";
+import List from "../components/list";
 import MoreBtn from "../components/more_btn";
 import Total from "../components/total";
-import { UserSkeletonLoader, postSkeletonLoader } from "../components/skeleton";
+import UserCard from "../components/user_card";
+import PostCard from "../components/post_card";
+import UserSkeletonLoader from "../components/user_skeleton";
+import PostSkeletonLoader from "../components/post_skeleton";
 import store from "../store";
 import { SEARCH_USER, FETCHMORE_USER } from "../actions/user";
 import { SEARCH_POST, FETCHMORE_POST } from "../actions/post";
@@ -14,26 +15,30 @@ import { logable } from "../decorators/logable";
 
 class App {
     /* user instance */
-    private readonly _users: UserList;
+    _users: List;
     /* post instance */
-    private readonly _posts: PostList;
+    _posts: List;
 
     constructor() {
         const userSkeleton = new UserSkeletonLoader();
 
-        const postSkeleton = new postSkeletonLoader();
+        const postSkeleton = new PostSkeletonLoader();
 
-        this._users = new UserList(userSkeleton);
+        const userCard = new UserCard();
 
-        new MoreBtn(this._users.model);
+        const postCard = new PostCard();
 
-        new Total(this._users.model);
+        this._users = new List(userSkeleton, userCard);
 
-        this._posts = new PostList(postSkeleton);
+        new MoreBtn(userCard.model);
 
-        new MoreBtn(this._posts.model);
+        new Total(userCard.model);
 
-        new Total(this._posts.model);
+        this._posts = new List(postSkeleton, postCard);
+
+        new MoreBtn(postCard.model);
+
+        new Total(postCard.model);
 
         this.handleSearchUser();
 
@@ -42,11 +47,11 @@ class App {
         this.bindEvt();
     }
     /**
-     * bind events
+     * Bind events
      *
      */
     bindEvt() {
-        fromEvent(document, "click").subscribe((evt: any) => {
+        document.addEventListener("click", (evt: any) => {
             const { dataset } = evt.target;
 
             if (dataset.js === "morebtn-user") {
@@ -56,32 +61,36 @@ class App {
             }
         });
     }
+
     /**
-     * search post
+     * Search post
      *
      */
     @logable
     handleSearchPost() {
         store.dispatch(SEARCH_POST, {}, this._posts.showLoader);
     }
+
     /**
-     * fetch post
+     * Fetch post
      *
      */
     @logable
     handleFetchMorePost() {
         store.dispatch(FETCHMORE_POST, {}, this._posts.showLoader);
     }
+
     /**
-     * search user
+     * Search user
      *
      */
     @logable
     handleSearchUser() {
         store.dispatch(SEARCH_USER, {}, this._users.showLoader);
     }
+
     /**
-     * fetch post
+     * Fetch post
      *
      */
     @logable
