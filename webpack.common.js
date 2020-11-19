@@ -5,7 +5,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 /* entry points */
-const entry = ["main", "babylon"];
+const entry = ["main"];
 
 module.exports = ({ mode }) => ({
     entry: entry.reduce((obj, cur) => {

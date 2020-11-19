@@ -1,15 +1,20 @@
-import { Loader } from "../interfaces/loader";
+import Loader from "./loader";
 import postSkeleton from "../../pug/templates/post_skeleton.pug";
 
-export default class PostSkeletonLoader implements Loader {
+export default class PostSkeletonLoader extends Loader {
     /**
      * Skeleton loader component for `Post` model
      *
-     * @property `template`
+     * @param {number} _count Loader count
+     * @property {() => string} template
      */
-    constructor() {}
-
-    template(count: number) {
-        return postSkeleton({ count });
+    constructor(protected _count: number) {
+        super();
     }
+
+    template = () => {
+        const { _count: count } = this;
+
+        return postSkeleton({ count });
+    };
 }

@@ -14,15 +14,13 @@ import { SEARCH_POST, FETCHMORE_POST } from "../actions/post";
 import { logable } from "../decorators/logable";
 
 class App {
-    /* user instance */
     _users: List;
-    /* post instance */
     _posts: List;
 
     constructor() {
-        const userSkeleton = new UserSkeletonLoader();
+        const userSkeleton = new UserSkeletonLoader(10);
 
-        const postSkeleton = new PostSkeletonLoader();
+        const postSkeleton = new PostSkeletonLoader(10);
 
         const userCard = new UserCard();
 
@@ -46,10 +44,7 @@ class App {
 
         this.bindEvt();
     }
-    /**
-     * Bind events
-     *
-     */
+
     bindEvt() {
         document.addEventListener("click", (evt: any) => {
             const { dataset } = evt.target;
@@ -62,37 +57,21 @@ class App {
         });
     }
 
-    /**
-     * Search post
-     *
-     */
     @logable
     handleSearchPost() {
         store.dispatch(SEARCH_POST, {}, this._posts.showLoader);
     }
 
-    /**
-     * Fetch post
-     *
-     */
     @logable
     handleFetchMorePost() {
         store.dispatch(FETCHMORE_POST, {}, this._posts.showLoader);
     }
 
-    /**
-     * Search user
-     *
-     */
     @logable
     handleSearchUser() {
         store.dispatch(SEARCH_USER, {}, this._users.showLoader);
     }
 
-    /**
-     * Fetch post
-     *
-     */
     @logable
     handleFetchMoreUser() {
         store.dispatch(FETCHMORE_USER, {}, this._users.showLoader);

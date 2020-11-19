@@ -4,31 +4,32 @@ import store from "../store";
 import moreBtn from "../../pug/templates/more_btn.pug";
 
 export default class MoreBtn implements Render {
+    /* Render wrap */
+    private readonly $wrap: HTMLElement | null;
     /**
      * More button component
      *
-     * @param _model
+     * @param    _model
      * @property `render`
      */
     constructor(private readonly _model: MODEL) {
-        store.events.subscribe(_model, () => this.render());
+        this.$wrap = document.querySelector(`[data-target='more-${_model}']`);
+
+        store.events.subscribe(_model, (state: any) => this.render(state));
     }
 
-    /**
-     * Renderer
-     */
-    render = () => {
-        const { _model } = this;
+    render = (state: any) => {
+        const { _model, $wrap } = this;
 
-        const { data, limit } = store.state[_model];
-
-        const $wrap = document.querySelector(`[data-target='more-${_model}']`)!;
+        const { data, limit } = state[_model];
 
         let template = "";
         if (data.length > 0 && data.length % limit === 0) {
             template = moreBtn({ type: _model });
         }
 
-        $wrap.innerHTML = template;
+        if ($wrap) {
+            $wrap.innerHTML = template;
+        }
     };
 }

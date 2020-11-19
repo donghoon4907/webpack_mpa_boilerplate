@@ -15,7 +15,6 @@ export type Post = {
 };
 
 export default class PostCard extends Template {
-    /* state model */
     _model: MODEL = MODEL.POST;
     /**
      * Card component for `Post` model
@@ -26,8 +25,5 @@ export default class PostCard extends Template {
         super();
     }
 
-    /**
-     * template
-     */
     template = (data: Post) => template({ ...data });
 }

@@ -6,16 +6,13 @@ export default class Total implements Render {
     /**
      * Total component
      *
-     * @param _model
+     * @param    _model
      * @property `render`
      */
     constructor(protected readonly _model: MODEL) {
         store.events.subscribe(_model, () => this.render());
     }
 
-    /**
-     * renderer
-     */
     render = () => {
         const { _model } = this;
 

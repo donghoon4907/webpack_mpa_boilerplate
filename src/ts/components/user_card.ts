@@ -12,7 +12,6 @@ export type User = {
 };
 
 export default class UserCard extends Template {
-    /* state model */
     _model: MODEL = MODEL.USER;
     /**
      * Card component for `User` model
@@ -23,10 +22,5 @@ export default class UserCard extends Template {
         super();
     }
 
-    /**
-     * template
-     *
-     * @memberof PostCard
-     */
     template = (data: User) => template({ ...data });
 }
